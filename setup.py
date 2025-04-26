@@ -39,11 +39,11 @@ class BuildQt(setuptools.Command):
         py_file = os.path.splitext(qrc_file)[0] + "_rc.py"
         if not self.newer(qrc_file, py_file):
             return
-        rcc_exe = self.find_executable("rcc")
+        rcc_exe = self.find_executable("pyside6-rcc")
         if rcc_exe is None:
             self.warn("Unable to find Qt Resource Compiler (rcc)")
             sys.exit(1)
-        if subprocess.call([rcc_exe, "-g", "python", qrc_file, "-o", py_file]) > 0:
+        if subprocess.call([rcc_exe, qrc_file, "-o", py_file]) > 0:
             self.warn("Unable to compile resource file {}".format(qrc_file))
             if not os.path.exists(py_file):
                 sys.exit(1)
